@@ -1,5 +1,14 @@
--- menuIdentifier used for groups
+-- Poppers Simple Spawn Menu
+-- v0.0.1
+-- Repository: https://github.com/Markoudstaal/Poppers-Simple-Spawn-Menu
+-- License: MIT
+
+-- You can edit the three lines below this if you want different characters or respawn behaviour
+
+-- Identifier for menu folders
 local menuIdentifier = '!'
+
+-- Identifier for bulk, so multiple groups in 1 menu
 local bulkIdentifier = '*'
 
 -- Set this to true if you want to respawn groups that are still alive
