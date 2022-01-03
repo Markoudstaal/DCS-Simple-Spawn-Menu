@@ -1,4 +1,4 @@
-# Poppers-Simple-Spawn-Menu
+# DCS Simple Spawn Menu
 A script for DCS that uses group names to create a spawn menu.
 
 ## Introduction
@@ -23,6 +23,8 @@ So if you have 2 groups and name them: ```!Red Air!*QRA*|Flight 1``` and ```!Red
 
 ### Important
 As you can read above every group you want to enter **requires** a ```!!``` whether you want a submenu or not. Otherwise the script will crash (I havn't learned LUA error handling yet). Also it is **required** to end with a ```|``` before writing the group name, again the script will crash if you don't.
+
+Also, at the moment this script doesn't do sorting so all menu's will be placed at random.
 
 ## Installation
 To use this script simply download it from the releases page on GitHub. After that add it to your mission with trigger 'Start Mission' and action 'Do Script File'. This script requires [mist](https://github.com/mrSkortch/MissionScriptingTools) and you have to add it to your mission before you load the pssm.lua file. 
