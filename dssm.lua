@@ -1,20 +1,23 @@
 -- DCS Simple Spawn Menu
 -- Created by Popper
--- v0.0.1
+-- v0.0.2
 -- Repository: https://github.com/Markoudstaal/DCS-Simple-Spawn-Menu
 -- License: MIT
 
 -- You can edit the three lines below this if you want different characters or respawn behaviour
 
--- Identifier for menu folders
-local menuIdentifier = '!'
+-- Identifier for the script
+local dssmIdentifier = '!'
+
+-- Identifier for submenu's
+local menuIdentifier = '?'
 
 -- Identifier for bulk, so multiple groups in 1 menu
 local bulkIdentifier = '*'
 
 -- Set this to true if you want to respawn groups that are still alive
 -- If set to false nothing will happen
-local respawn = 'true'
+local respawn = true
 
 -- DO NOT EDIT BELOW THIS LINE --
 
@@ -29,36 +32,47 @@ function string.starts(string, start)
   return string.sub(string,1,string.len(start))==start
 end
 
--- Removes menuIdentifier and submenu name
-local function getCleanName(name)
-  local endOfMenuName = string.find(name, '|')
-  return string.sub(name, endOfMenuName+1, string.len(name))
-end
-
 -- Gets a string between 2 identifiers
 local function getStringByIdentifier(name, identifier)
-  local startChar = string.find(name, identifier)+1
-  local endChar = string.find(name, identifier, startChar)-1
-  return string.sub(name, startChar, endChar)
+  local startChar = string.find(name, identifier)
+  if startChar == nil then
+    return nil
+  end
+  local endChar = string.find(name, identifier, startChar+1)
+  if endChar == nil then
+    return nil
+  else
+    return string.sub(name, startChar+1, endChar-1)
+  end
+end
+
+local function getCleanName(name)
+  local startChar = string.find(name, dssmIdentifier)
+  local endChar = string.find(name, dssmIdentifier, startChar+1)
+  local cleanName = string.sub(name, endChar+1, string.len(name))
+  if string.starts(cleanName, ' ') then
+    return string.sub(cleanName, 2, string.len(cleanName))
+  else
+    return cleanName
+  end
 end
 
 -- Parses a group if name starts with the menu prefix
 local function parseGroup(group)
   local groupName = Group.getName(group)
-  if string.starts(groupName, menuIdentifier)
-  then
+  if getStringByIdentifier(groupName, dssmIdentifier) ~= nil then
     local subMenuName = getStringByIdentifier(groupName, menuIdentifier)
 
-    if subMenuName == '' then
+    if subMenuName == nil then
       subMenuName = 'root'
     end
 
     if subMenuDB[subMenuName] == nil then
       subMenuDB[subMenuName] = subMenuName
     end
-    
+
     -- Check if group is bulk
-    if string.find(groupName, bulkIdentifier) == nil then
+    if getStringByIdentifier(groupName, bulkIdentifier) == nil then
       -- Add group to groupDB
       if groupDB[subMenuName] == nil then
         groupDB[subMenuName] = {}
