@@ -22,7 +22,9 @@ If you want to spawn and despawn multiple groups with one button use this format
 So if you have 2 groups and name them: ```!Red Air!*QRA*|Flight 1``` and ```!Red Air!*QRA*|Flight 2```. A submenu in the F10 menu will be created with the name ```Red Air```. Inside will be a submenu called ```QRA``` that holds inside 2 buttons: Spawn and Despawn. These buttons will spawn, respawn or despawn both groups.
 
 ### Important
-As you can read above every group you want to enter **requires** a ```!!``` whether you want a submenu or not. Otherwise the script will crash (I havn't learned LUA error handling yet). Also it is **required** to end with a ```|``` before writing the group name, again the script will crash if you don't.
+As you can read above every group you want this script to look at **requires** a ```!!``` whether you want a submenu or not. Otherwise the script will crash (I havn't learned LUA error handling yet. Also it is **required** to end with a ```|``` before writing the group name, again the script will crash if you don't.
+
+Make sure you don't use any of the ```!, * or |``` in your other groups names as this might cause issues.
 
 Also, at the moment this script doesn't do sorting so all menu's will be placed at random.
 
