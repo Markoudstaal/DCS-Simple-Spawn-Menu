@@ -31,8 +31,8 @@ If I have the following groups:
 - ```!! Red 1```
 - ```!?Wave 1?! Red 2```
 - ```!?Wave 1?! Red 3```
-- ```!?Wave 2?*BULK 1! Red 4```
-- ```!?Wave 2?*BULK 1! Red 5```
+- ```!?Wave 2?*BULK 1*! Red 4```
+- ```!?Wave 2?*BULK 1*! Red 5```
 
 The following menu will be created (not accounting for the random order it will be in):
 
