@@ -71,6 +71,24 @@ Make sure you don't use any of the ```!, * or |``` in your other groups names as
 Also, at the moment this script doesn't do sorting so all menu's will be placed at random.
 
 ## Installation
-To use this script simply download it from the releases page on GitHub. After that add it to your mission with trigger 'Start Mission' and action 'Do Script File'. This script requires [mist](https://github.com/mrSkortch/MissionScriptingTools) and you have to add it to your mission before you load the dssm.lua file.
+Installation is like any other script but keep in mind Mission Scripting Tools are **required**:
+
+1. Download Mission Scripting Tools: [mist](https://github.com/mrSkortch/MissionScriptingTools/releases)
+2. Download DCS Simple Spawn Menu: [dssm](https://github.com/Markoudstaal/DCS-Simple-Spawn-Menu/releases)
+3. Open DCS and open or create a mission.
+4. Go to triggers and press ```NEW```.
+5. Set type to ```4 MISSION START``` and give it a name.
+6. Below the ```ACTIONS``` windows press ```NEW```.
+7. Set ```ACTION``` to ```DO SCRIPT FILE``` and select the mist lua file.
+8. Repeat steps 6 and 7 with dssm.lua
+9. Create your groups with the correct names.
+10. Profit!
+
+## Media
+For any direct questions you can find me on Discord: Popper#7527
+
+Forum post: [DCS Simple Spawn Menu](https://forums.eagle.ru/topic/290315-dcs-simple-spawn-menu-create-an-f10-spawn-despawn-and-respawn-menu-without-coding/)
+
+Youtube: [710th Goat Herders](https://www.youtube.com/channel/UCn-TZnAaI9qzF97O1_wiNyA)
 
 
