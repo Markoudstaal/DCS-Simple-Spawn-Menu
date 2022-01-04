@@ -29,29 +29,34 @@ So if you have 2 groups and name them: ```!?Red Air?*QRA*!Flight 1``` and ```!?R
 If I have the following groups:
 
 - ```!! Red 1```
-- ```!?Wave 1?! Red 2```
+- ```!*Bulk 1*! Red 2
+- ```!*Bulk 1*! Red 3
 - ```!?Wave 1?! Red 3```
-- ```!?Wave 2?*BULK 1*! Red 4```
-- ```!?Wave 2?*BULK 1*! Red 5```
+- ```!?Wave 1?! Red 4```
+- ```!?Wave 2?*BULK 2*! Red 5```
+- ```!?Wave 2?*BULK 2*! Red 6```
 
 The following menu will be created (not accounting for the random order it will be in):
 
 - Red 1
   - Spawn
   - Despawn
+- Bulk 1
+  - Spawn
+  - Despawn
 - Wave 1
-  - Red 2
-    - Spawn 
-    - Despawn
   - Red 3
     - Spawn 
     - Despawn
+  - Red 4
+    - Spawn 
+    - Despawn
 - Wave 2
-  - BULK 1
+  - BULK 2
     - Spawn
     - Despawn
 
-As you can see Red 4 and 5 are not shown as they are a part of BULK 1 and both will be spawned or despawned by the buttons.
+As you can see Red 2, 3, 4 and 5 are not shown as they are a part of a bulk and can be spawned or despawned by their respective buttons.
 
 ### Respawning
 It is possible to respawn a killed or despawned group. Additionally when a group is still alive, pressing the spawn button wil respawn the group at it's original location. This can be turned off by setting the ```respawn``` variable in the script to false. In that case nothing will happen when the group is alive and Spawn is pressed.
