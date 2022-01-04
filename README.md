@@ -36,7 +36,9 @@ If I have the following groups:
 - ```!?Wave 2?*BULK 2*! Red 5```
 - ```!?Wave 2?*BULK 2*! Red 6```
 
-The following menu will be created (not accounting for the random order it will be in):
+The following menu will be created:
+
+![ezgif-5-3325404021](https://user-images.githubusercontent.com/7512733/148083674-40139be1-c814-4a63-8523-720268d3885f.gif)
 
 - Red 1
   - Spawn
