@@ -29,8 +29,8 @@ So if you have 2 groups and name them: ```!?Red Air?*QRA*!Flight 1``` and ```!?R
 If I have the following groups:
 
 - ```!! Red 1```
-- ```!*Bulk 1*! Red 2
-- ```!*Bulk 1*! Red 3
+- ```!*Bulk 1*! Red 2```
+- ```!*Bulk 1*! Red 3```
 - ```!?Wave 1?! Red 3```
 - ```!?Wave 1?! Red 4```
 - ```!?Wave 2?*BULK 2*! Red 5```
