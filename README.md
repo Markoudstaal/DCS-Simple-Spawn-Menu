@@ -85,7 +85,7 @@ Installation is like any other script but keep in mind Mission Scripting Tools a
 10. Profit!
 
 ## Media
-For any direct questions you can find me on Discord: Popper#7527
+DCS Simple Spawn Menu Discord: For all your questions you can go to this [Discord Server](https://discord.gg/8VbKnKvN5r)
 
 Forum post: [DCS Simple Spawn Menu](https://forums.eagle.ru/topic/290315-dcs-simple-spawn-menu-create-an-f10-spawn-despawn-and-respawn-menu-without-coding/)
 
