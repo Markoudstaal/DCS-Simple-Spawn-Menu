@@ -15,9 +15,13 @@ You can see the ```!``` as the opening and closing brackets for this script. Bet
 The bare minimum ```!! Your group Name``` will add a submenu to the F10 menu called ```Your group name``` with within a spawn and despawn button.
 
 ### ```?Submenu Name?```
-To create a new submenu you can use the ```?```. 
+To create a new submenu you can use the ```?```.
+
+You can create further nested submenus by inserting more ```?``` characters within the Submenu string.
 
 So ```!?First Wave?!QRF``` will create a submenu in the F10 menu called ```First Wave```. In that submenu there will be another submenu called ```QRF```. In that submenu there will be 2 buttons: Spawn and Despawn.
+
+```!?Air?Hard?First Wave?!QRF``` will create submenus in the F10 menus like ```Air``` -> ```Hard``` -> ```First Wave```. In that list there will be another submenu called ```QRF```. In that submenu there will be 2 buttons: Spawn and Despawn.
 
 
 ### ```*Bulk Name*```
@@ -35,6 +39,9 @@ If I have the following groups:
 - ```!?Wave 1?! Red 4```
 - ```!?Wave 2?*BULK 2*! Red 5```
 - ```!?Wave 2?*BULK 2*! Red 6```
+- ```!?Wave 3?Air?*BULK 3*! Red 7```
+- ```!?Wave 3?Air?*BULK 3*! Red 8```
+- ```!?Wave 3?Ground?! Red 9```
 
 The following menu will be created:
 
@@ -57,8 +64,17 @@ The following menu will be created:
   - BULK 2
     - Spawn
     - Despawn
-
-As you can see Red 2, 3, 4 and 5 are not shown as they are a part of a bulk and can be spawned or despawned by their respective buttons.
+- Wave 3
+  -Air
+    - BULK 3
+      - Spawn
+      - Despawn
+  -Ground
+    - Red 9
+      - Spawn
+      - Despawn
+      
+As you can see Red 2, 3, 4, 5, 6, 7 and 8 are not shown as they are a part of a bulk and can be spawned or despawned by their respective buttons.
 
 ### Respawning
 It is possible to respawn a killed or despawned group. Additionally when a group is still alive, pressing the spawn button wil respawn the group at it's original location. This can be turned off by setting the ```respawn``` variable in the script to false. In that case nothing will happen when the group is alive and Spawn is pressed.
