@@ -1,6 +1,6 @@
 -- DCS Simple Spawn Menu
 -- Created by Popper
--- v0.0.2
+-- v0.1.1
 -- Repository: https://github.com/Markoudstaal/DCS-Simple-Spawn-Menu
 -- License: MIT
 -- You can edit the three lines below this if you want different characters or respawn behaviour
