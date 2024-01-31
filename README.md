@@ -23,6 +23,9 @@ So ```!?First Wave?!QRF``` will create a submenu in the F10 menu called ```First
 
 ```!?Air?Hard?First Wave?!QRF``` will create submenus in the F10 menus like ```Air``` -> ```Hard``` -> ```First Wave```. In that list there will be another submenu called ```QRF```. In that submenu there will be 2 buttons: Spawn and Despawn.
 
+### Notes on multi-level menus
+The parser for sub menus is case sensitive: ```!?Wave 2?*BULK 2*! Red 5``` and - ```!?WAVE 2?*BULK 2*! Red 5``` will generate two separate menus
+
 
 ### ```*Bulk Name*```
 If you want to spawn and despawn multiple groups with one button use this format. As stated above if you want this script to parse this group you'll have to at least have ```!!```. But bulk's can also be added to a submenu. 

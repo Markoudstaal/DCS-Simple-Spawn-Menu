@@ -1,11 +1,10 @@
 -- DCS Simple Spawn Menu
 -- Created by Popper
--- v0.1.1
+-- v0.1.2
+-- Updated for multimenu handling by Gillogical
 -- Repository: https://github.com/Markoudstaal/DCS-Simple-Spawn-Menu
 -- License: MIT
 -- You can edit the three lines below this if you want different characters or respawn behaviour
-
--- Update 02 Dec 2023: Added ability to create a multi level menu by adding additional '?' symbols e.g. "!?GROUND?GRD UNITS?LIGHT ARMOUR?!BRDM"
 
 -- Identifier for the script
 local dssmIdentifier = '!'
@@ -21,6 +20,8 @@ local bulkIdentifier = '*'
 local respawn = true
 
 -- DO NOT EDIT BELOW THIS LINE --
+-- Added a WARN level logger to help with debugging
+myLogger = mist.Logger:new("DSSM")
 
 -- Inititate group and command db's
 local groupDB = {}
@@ -70,13 +71,25 @@ end
 
 -- Recursively parse a string until we have no identifiers left to eat
 local function getStringToIdentifier(name, identifier)
+    if name == "" or name == nil then 
+        return {}
+    end
+    
     local nextChar = string.find(name, identifier)
     if nextChar == nil then
-        return {name, nil}
+        return {[name] = {}}
     end
     local firstOut = string.sub(name, 0, nextChar - 1)
     local lastOut = string.sub(name, nextChar + 1, string.len(name))
-    return {firstOut, getStringToIdentifier(lastOut, identifier)}
+    return {[firstOut] = getStringToIdentifier(lastOut, identifier)}
+end
+
+local function countTableSize(table)
+    local count = 0
+    for k, v in pairs(table) do
+        count = count + 1
+    end
+    return count
 end
 
 -- Recursively collapse a getStringToIdentifier result back to a single string
@@ -84,24 +97,14 @@ local function collapseToGroupName(name)
     if name == nil then
         return ''
     else
-        return name[1] .. collapseToGroupName(name[2])
+        local s = ''
+        for k, v in pairs(name) do
+            return k .. collapseToGroupName(v) 
+        end
+        return s
     end
 end
 
--- Creates a set of submenus from a getStringToIdentifier setup
--- returns the lowest level menu
-local function createMultiMenus(name, parentMenu)
-    if name == nil then
-        return nil
-    else
-        local menu = missionCommands.addSubMenu(name[1], parentMenu)
-        if name[2] == nil then
-            return menu
-        else
-            return createMultiMenus(name[2], menu)
-        end
-    end
-end
 
 local function getCleanName(name)
     local startChar = string.find(name, dssmIdentifier)
@@ -114,34 +117,58 @@ local function getCleanName(name)
     end
 end
 
+local function insertToLowestUnique(subMenu, newMenu)
+    local foundMatch = nil
+    local keyInsert = nil
+    local toInsert = nil
+    
+    if countTableSize(subMenu) == 0 then
+        return
+    end
+    
+    for k, v in pairs(subMenu) do
+        for knew, vnew in pairs(newMenu) do
+            keyInsert = knew
+            toInsert = vnew
+            if knew == k then 
+                foundMatch = k
+            end
+        end
+    end
+    
+    if foundMatch == nil then
+        subMenu[keyInsert] = toInsert
+        print("Inserting k " .. keyInsert .. " | ")
+    else
+        insertToLowestUnique(subMenu[foundMatch], newMenu[foundMatch])
+        print("Next Level " .. foundMatch)
+    end
+end
+
+
 -- Parses a group if name starts with the menu prefix
 local function parseGroup(group)
     local groupName = Group.getName(group) 
     local dssmString = getStringByIdentifier(groupName, dssmIdentifier)
     if dssmString ~= nil then
-        local subMenuMainString = getStringByIdentifierGreedy(dssmString, menuIdentifier)
-        local subMenuName = getStringToIdentifier(subMenuMainString, menuIdentifier)
-        if subMenuName == nil then
-            subMenuName = {}
-            subMenuName[1] = 'root'
-            subMenuName[2] = nil
+        local subMenuMainString = getStringByIdentifierGreedy(dssmString, menuIdentifier)   
+        local subMenuName = getStringToIdentifier(subMenuMainString, menuIdentifier)        -- {["AIR"] = { ["SOUTH"] = {["mig"] = {}}}}
+        myLogger:msg('DSSM $1 | subMenuMainString $2 | subMenuName $3 | $4', dssmString, subMenuMainString, subMenuName, countTableSize(subMenuName))
+        if countTableSize(subMenuName) == 0 then
+            subMenuName['root'] = {}
         end
 
-        if subMenuDB[subMenuName[1]] == nil then
-            subMenuDB[subMenuName[1]] = {subMenuName[2]}
+        if countTableSize(subMenuDB) == 0 then
+            subMenuDB = subMenuName
+            for k, v in pairs(subMenuName) do
+                subMenuDB[k] = v
+            end
+            myLogger:msg('New Submenu $1 \n DB $2', subMenuName, subMenuDB)
         else
-
-            local foundMatch = false
-            local subGroupName = collapseToGroupName(subMenuName[2])
-            for index, data in ipairs(subMenuDB[subMenuName[1]]) do
-                if collapseToGroupName(data) == subGroupName then
-                    foundMatch = true
-                end
-            end
-            if foundMatch ~= true then
-                table.insert(subMenuDB[subMenuName[1]], 1, subMenuName[2])
-            end
+            insertToLowestUnique(subMenuDB, subMenuName)
+            myLogger:msg('Insert Submenu $1 \n DB $2', subMenuName, subMenuDB)
         end
+
 
         -- Check if group is bulk
         local groupDBName = collapseToGroupName(subMenuName)
@@ -238,6 +265,25 @@ local function addToMenu(groupDBName, parentMenu)
     end
 end
 
+
+-- Creates a set of submenus from a getStringToIdentifier setup
+local function createMultiMenus(name, parentMenu, curGroupDBName)
+    if countTableSize(name) == 0 then
+        return nil
+    else
+        for k, v in pairs(name) do
+            local menu = missionCommands.addSubMenu(k, parentMenu)
+            myLogger:msg('Multimenu creation $1 \nparent menu $2', name, parentMenu)
+            if countTableSize(v) == 0 then
+                myLogger:msg('Multimenu STOP $1| Group $2', menu,curGroupDBName .. k)
+                addToMenu(curGroupDBName .. k, menu)
+            else
+                createMultiMenus(v, menu, curGroupDBName .. k)
+            end
+        end
+    end
+end
+
 -- Get all groups with a menuIdentifier and create sub menu entries for them.
 -- Neutral coalition
 for i, group in pairs(coalition.getGroups(0)) do
@@ -252,24 +298,18 @@ for i, group in pairs(coalition.getGroups(2)) do
     parseGroup(group)
 end
 
-
+myLogger:warn('FINAL PARSED SubMenu $1', subMenuDB)
+-- Create submenus and add groups to them
 for key, subMenu in pairs(subMenuDB) do
     local menu = ''
-    if key ~= 'root' then
-        menu = missionCommands.addSubMenu(key)
-    end
-
     if key == 'root' then
         local groupDBName = key
+
+        myLogger:msg('Root Menu $1', key)
         addToMenu(groupDBName, menu)
     else
-        -- { [1] = "F16", [2] = "Group", }
-        for i, subMenu2 in ipairs(subMenu) do
-            local level2Menu = ''
-            local groupDBName = key
-            groupDBName = key .. collapseToGroupName(subMenu2)
-            level2Menu = createMultiMenus(subMenu2, menu)
-            addToMenu(groupDBName, level2Menu)
-        end
+        menu = missionCommands.addSubMenu(key)
+        myLogger:msg('Top Menu $1', key)
+        createMultiMenus(subMenu, menu, key)
     end
 end

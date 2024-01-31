@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.2
+Fixes for multi-level menus when duplicate branches exist below the first level.
+
 ## v0.1.1
 Fixed version number in code.
 
