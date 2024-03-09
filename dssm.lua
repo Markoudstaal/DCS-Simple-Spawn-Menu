@@ -1,6 +1,6 @@
 -- DCS Simple Spawn Menu
 -- Created by Popper
--- v0.1.2
+-- v0.1.3
 -- Updated for multimenu handling by Gillogical
 -- Repository: https://github.com/Markoudstaal/DCS-Simple-Spawn-Menu
 -- License: MIT
@@ -269,7 +269,9 @@ end
 -- Creates a set of submenus from a getStringToIdentifier setup
 local function createMultiMenus(name, parentMenu, curGroupDBName)
     if countTableSize(name) == 0 then
-        return nil
+        myLogger:msg('Table Size zero, STOP $1| Group $2', parentMenu, curGroupDBName)
+		addToMenu(curGroupDBName, parentMenu)
+		return nil
     else
         for k, v in pairs(name) do
             local menu = missionCommands.addSubMenu(k, parentMenu)
