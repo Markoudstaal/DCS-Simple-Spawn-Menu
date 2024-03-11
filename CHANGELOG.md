@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.3
+Fixed regression on single level menu spawning caused by multi-menu code
+
 ## v0.1.2
 Fixes for multi-level menus when duplicate branches exist below the first level.
 
